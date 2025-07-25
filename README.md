@@ -1,2 +1,2 @@
 # web
-practice
+practice ci/cd
