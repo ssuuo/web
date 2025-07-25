@@ -1,0 +1,47 @@
+name: Build & Push NGINX, Maven/Tomcat
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      # 1. NGINX 이미지 빌드/푸시
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build & Push NGINX image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./nginx
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/nginx-app:v1.0
+
+      # 2. Maven 빌드 (Tomcat용 war)
+      - name: Set up JDK 11
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '11'
+
+      - name: Build with Maven
+        working-directory: ./tomcat      # tomcat 폴더에 pom.xml 있을 때
+        run: mvn clean package
+
+      # 3. Tomcat 이미지 빌드/푸시 (빌드된 war 포함)
+      - name: Build & Push Tomcat image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./tomcat
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/tomcat-app:v1.0
