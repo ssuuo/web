@@ -45,6 +45,8 @@ jobs:
           context: ./tomcat
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/tomcat-app:v2.0
+
       - name: List WAR contents (확인용)
+        working-directory: ./tomcat
         run: |
           jar tf target/*.war | grep mariadb
