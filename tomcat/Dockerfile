@@ -6,6 +6,6 @@ FROM tomcat:9-jdk11
 # Maven 빌드로 생성된 WAR 파일을 Tomcat에 배포
 COPY target/*.war /usr/local/tomcat/webapps/ROOT.war
 
-COPY context.xml /usr/local/tomcat/conf/context.xml
+#COPY context.xml /usr/local/tomcat/conf/context.xml
 
 EXPOSE 8080
