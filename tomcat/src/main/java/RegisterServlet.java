@@ -2,8 +2,6 @@ import java.io.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import java.sql.*;
-import javax.naming.*;
-import javax.sql.DataSource;
 
 public class RegisterServlet extends HttpServlet {
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -16,9 +14,15 @@ public class RegisterServlet extends HttpServlet {
     boolean registerSuccess = false;
 
     try {
-      Context initContext = new InitialContext();
-      DataSource ds = (DataSource) initContext.lookup("java:comp/env/jdbc/mydb");
-      Connection conn = ds.getConnection();
+      // ✅ JDBC 드라이버 수동 로딩
+      Class.forName("org.mariadb.jdbc.Driver");
+
+      // ✅ 직접 JDBC 연결
+      String url = "jdbc:mariadb://db-service:3306/mydatabase";
+      String dbUser = "root";
+      String dbPassword = "A12345!";
+
+      Connection conn = DriverManager.getConnection(url, dbUser, dbPassword);
 
       PreparedStatement ps = conn.prepareStatement(
         "INSERT INTO users (username, password, name) VALUES (?, ?, ?)"
@@ -29,8 +33,11 @@ public class RegisterServlet extends HttpServlet {
 
       int result = ps.executeUpdate();
       registerSuccess = result > 0;
+
+      ps.close();
       conn.close();
     } catch (Exception e) {
+      e.printStackTrace(); // 개발 시 디버깅에 도움
       registerSuccess = false;
     }
 
