@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: tomcat
-        image: ssssssoo/tomcat-app:v1.0  # **반드시 실제 DockerHub 경로로 수정**
+        image: ssssssoo/tomcat-app:v2.0  # **반드시 실제 DockerHub 경로로 수정**
         ports:
         - containerPort: 8080
         env:

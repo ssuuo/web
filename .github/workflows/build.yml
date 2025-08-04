@@ -44,4 +44,4 @@ jobs:
         with:
           context: ./tomcat
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/tomcat-app:v1.0
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/tomcat-app:v2.0
