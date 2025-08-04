@@ -52,5 +52,6 @@ jobs:
           jar tf target/*.war | grep mariadb
 
       - name: List WAR contents (check RegisterServlet)
+        working-directory: ./tomcat
         run: |
           jar tf target/*.war | grep RegisterServlet
