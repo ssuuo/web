@@ -55,3 +55,9 @@ jobs:
         working-directory: ./tomcat
         run: |
           jar tf target/*.war | grep RegisterServlet
+
+      - name: List WAR contents (check RegisterServlet)
+        working-directory: ./tomcat
+        run: |
+          jar xf target/*.war WEB-INF/web.xml
+          cat WEB-INF/web.xml
