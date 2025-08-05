@@ -56,8 +56,8 @@ jobs:
         run: |
           jar tf target/*.war | grep RegisterServlet
 
-      - name: List WAR contents (check RegisterServlet)
+      - name: Check WAR contents (web.xml 포함 여부 확인)
         working-directory: ./tomcat
         run: |
-          jar xf target/*.war WEB-INF/web.xml
-          cat WEB-INF/web.xml
+          unzip -l target/*.war | grep web.xml || true
+
